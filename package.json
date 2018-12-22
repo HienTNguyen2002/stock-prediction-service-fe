@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "webpack-dev-server --port $PORT --host 0.0.0.0 --inline --content-base ./src --history-api-fallback",
     "start-local": "webpack-dev-server --inline --content-base ./src --history-api-fallback"
+=======
+    "dev": "webpack-dev-server --inline --content-base ./src --history-api-fallback"
+>>>>>>> update project
   },
   "author": "",
   "license": "ISC",
