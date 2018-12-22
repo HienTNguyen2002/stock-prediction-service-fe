@@ -1,0 +1,67 @@
+{
+    "parameters": [
+        {
+            "id": "ticker",
+            "label": "Stock Ticker",
+            "element": "textbox",
+            "type": "string",
+            "active": true       
+        },
+        {
+            "id": "daily_ssl",
+            "label": "Daily Seasonality",
+            "element": "checkbox",
+            "type": "boolean",
+            "active": true
+        },
+        {
+            "id": "wkly_ssl",
+            "label": "Weekly Seasonality",
+            "element": "checkbox",
+            "type": "boolean",
+            "active": true
+        },
+        {
+            "id": "mthly_ssl",
+            "label": "Monthly Seasonality",
+            "element": "checkbox",
+            "type": "boolean",
+            "active": true
+        },
+        {
+            "id": "qrtly_ssl",
+            "label": "Quarterly Seasonality",
+            "element": "checkbox",
+            "type": "boolean",
+            "active": true
+        },
+        {
+            "id": "yrly_ssl",
+            "label": "Yearly Seasonality",
+            "element": "checkbox",
+            "type": "boolean",
+            "active": true
+        },
+        {
+            "id": "training_years",
+            "label": "Training Years",
+            "element": "textbox",
+            "type": "number",
+            "active": true        
+        },
+        {
+            "id": "prior",
+            "label": "Changepoints prior",
+            "element": "textbox",
+            "type": "number",
+            "active": true       
+        },
+        {
+            "id": "ma_lag",
+            "label": "Moving Average Lag",
+            "element": "textbox",
+            "type": "number",
+            "active": true
+        }
+    ]
+}
