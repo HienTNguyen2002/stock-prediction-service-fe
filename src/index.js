@@ -8,6 +8,9 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import App from './modules/App'
 //import ModelBuilder from './screens/ModelBuilder'
 import ModelBuilder from './screens/ModelBuilder'
+import RealTimeChart from './screens/RealTimeChart'
+import TeachnicalChartPage from './screens/TeachnicalAnalysisChart'
+
 
 const store = createStore(
                     rootReducer,
@@ -19,6 +22,8 @@ render((
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={ModelBuilder}/>
+        <Route path="/RealTimeChart" component={RealTimeChart} />
+        <Route path="/TeachnicalChartPage" component={TeachnicalChartPage} />
       </Route>
     </Router>
   </Provider>
