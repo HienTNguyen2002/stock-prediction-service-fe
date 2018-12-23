@@ -178,7 +178,7 @@ class RealTimeChart extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-            <Iframe url={`http://ta.vietstock.vn/?stockcode=VIC`}
+            <Iframe url={`https://ta.vietstock.vn/?stockcode=VIC`}
                             width="100%"
                             height="500px"
                             id="myId"
