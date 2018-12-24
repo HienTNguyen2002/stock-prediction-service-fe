@@ -5,6 +5,20 @@
             "label": "Stock Ticker",
             "element": "textbox",
             "type": "string",
+            "active": false       
+        },
+        {
+            "id": "label",
+            "label": "Label Data",
+            "element": "textbox",
+            "type": "string",
+            "active": true       
+        },
+        {
+            "id": "start_date",
+            "label": "Prediction Start",
+            "element": "textbox",
+            "type": "string",
             "active": true       
         },
         {

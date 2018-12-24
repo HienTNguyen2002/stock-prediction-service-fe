@@ -6,12 +6,31 @@ const updateParams = (id, value) => ({
     value
 })
 
-const loadConfigs = (configUrl) => ({
-    type: Actions.LOAD_CONFIGS,
-    configUrl
+const loadParamConfigCompleted = (paramConfig) => ({
+    type: Actions.LOAD_PARAM_CONFIG_COMPLETE,
+    paramConfig
 })
+
+function loadParamConfig(){
+    return (dispatch) => {
+        fetch('../configs/modelParameter.json')
+        .then(response => {
+            console.log('Config Response:', response)
+            return response.json()
+        })
+        .then(json => {
+            const {parameters} = json
+            console.log('Param config Loaded', parameters)
+            dispatch(loadParamConfigCompleted(parameters))
+        })
+        .catch(exception=>{
+            console.log('error while getting index config', exception)
+        })
+    }
+}
+
 
 export {
     updateParams,
-    loadConfigs
+    loadParamConfig
 }

@@ -23,7 +23,7 @@ const Model = (state = initialState, action)=> {
         case Actions.BUILD_MODEL_ERROR:
             return {
                 ...state,
-                hasErrored: action.hasErrored,
+                hasError: action.hasErrored,
                 message: action.message
             }
         default:

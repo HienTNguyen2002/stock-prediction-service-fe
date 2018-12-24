@@ -1,57 +1,53 @@
 import React from 'react'
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+
 
 var moment = require('moment')
 
-export default class CustomTooltip extends React.Component{
-    getIntroOfPage(label) {
-        if (label === 'Page A') {
-          return "Page A is about men's clothing";
-        } else if (label === 'Page B') {
-          return "Page B is about women's dress";
-        } else if (label === 'Page C') {
-          return "Page C is about women's bag";
-        } else if (label === 'Page D') {
-          return "Page D is about household goods";
-        } else if (label === 'Page E') {
-          return "Page E is about food";
-        } else if (label === 'Page F') {
-          return "Page F is about baby food";
+const styles = theme => ({
+    container:{
+      
+    },
+    margin:{
+      margin: 5
+    }
+})
+
+class CustomTooltip extends React.Component{
+      renderTooltipData(){
+        const { active } = this.props;
+        
+        if (active) {
+          const { payload, label } = this.props;
+          console.log(payload)
+          return (
+            <Typography component='div' style={{display: 'inline-block'}}>
+              <Typography variant='body1'>{label}</Typography>
+            </Typography>
+          )
         }
       }
-
-      getDataFromLabel(label){
-          const {data} = this.props;
-          if(!data){
-              return {}
-          }
-          //console.log(data)
-          return data.find(item => item.ds === label)
-      }
     
-      render() {
-        const { active } = this.props;
-    
-        if (active) {
-            const { payload, label } = this.props;
-            let activeData = this.getDataFromLabel(label)
-            let formattedLabel = moment(label).format('MMMM Do Y')
-            return (
-                <div className="custom-tooltip">
-                    <div>{formattedLabel}</div>
-                    <div>Estimation: {activeData && activeData['y']}</div>
-                    <div>Upper Bound: {activeData && activeData['yhat_upper']}</div>
-                    <div>Lower Bound: {activeData && activeData['yhat_lower']}</div>
-                </div>
-            );
-            }
-        
-            return null;
+      render(){
+        const {classes} = this.props
+         return(
+           <Paper>
+              <div style={{margin: 5}}>
+                {this.renderTooltipData()}
+              </div>
+           </Paper>
+         )
       }
 }
 
+export default CustomTooltip
+
 CustomTooltip.propTypes = {
-type: PropTypes.string,
-payload: PropTypes.array,
-label: PropTypes.string,
+  type: PropTypes.string,
+  payload: PropTypes.array,
+  label: PropTypes.string,
 }

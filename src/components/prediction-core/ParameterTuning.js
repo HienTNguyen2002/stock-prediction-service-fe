@@ -38,24 +38,9 @@ const styles = theme => ({
     }
 });
 
-const URL = "https://ec2-18-191-156-176.us-east-2.compute.amazonaws.com"
-
  class ParameterTuning extends React.PureComponent{
     constructor(props){
         super(props)
-        this.state = {
-            configuration: null,
-            buildUrl: ""
-        }
-        this.loadConfig()
-    }
-
-    loadConfig(){
-        fetch('../../configs/model_parameters.json')
-        .then( result => result.json())
-        .then(json =>{
-            this.setState({configuration: json})
-        })
     }
 
     onCheckBoxChange(event, value){
@@ -76,11 +61,14 @@ const URL = "https://ec2-18-191-156-176.us-east-2.compute.amazonaws.com"
         updateParams(id, value)
     }
 
-    parseConfig(configs){
-        const { classes } = this.props;
+    generateParamTuners(){
+        const { classes, paramConfig, params} = this.props;
+        console.log('TUNERS',paramConfig)
+        if(!paramConfig || !params){
+            return <div></div>
+        }
         
-        let parameters = configs['parameters']
-        let elements = parameters.map((item, index) => {
+        let elements = paramConfig.map((item, index) => {
             const {label, active, id } = item
             let bodyElement = {}
             if(!active) return
@@ -88,8 +76,8 @@ const URL = "https://ec2-18-191-156-176.us-east-2.compute.amazonaws.com"
             bodyElement = this.getElement(item)
 
             return (
-            <Grid id={index} item xs className={classes.itemGrid}>
-                <div id={`div-${id}`}>
+            <Grid key={`div-${id}`} item xs className={classes.itemGrid}>
+                <div >
                     <Typography component="div" variant="body1" className={classes.label}>{label}</Typography>
                     {bodyElement}
                 </div>
@@ -102,6 +90,7 @@ const URL = "https://ec2-18-191-156-176.us-east-2.compute.amazonaws.com"
     getElement(item){
         let bodyElement = {}
         let {params} = this.props
+
         const {id, element, type} = item
         switch(element){
             case "checkbox":
@@ -119,15 +108,11 @@ const URL = "https://ec2-18-191-156-176.us-east-2.compute.amazonaws.com"
 
     render(){
         let {classes} = this.props
-        let {configuration} = this.state
         return(
             <div>
                 <Grid container className={classes.gridContainer}>
-                    {configuration && this.parseConfig(this.state.configuration)}
+                    {this.generateParamTuners()}
                 </Grid>
-                {/* <div className={classes.buttonContainer}>
-                    <BuildButton className={classes.button}/> 
-                </div> */}
             </div>
         )
     }

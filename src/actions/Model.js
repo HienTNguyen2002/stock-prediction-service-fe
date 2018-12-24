@@ -60,6 +60,10 @@ function statusEveryTwoSeconds(modelId) {
                     dispatch(buildModelSuccess(modelId))
                     clearInterval(intervalId)
                 }
+                if(status === -2 ){
+                    dispatch(buildModelError(true))
+                    clearInterval(intervalId)
+                }
             })
             .catch(()=> dispatch(buildModelError(true)))
         }, 2000);
