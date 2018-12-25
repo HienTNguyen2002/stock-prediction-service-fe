@@ -6,20 +6,29 @@ const initialState = {
     predictions: []
 }
 
+var moment = require('moment')
+
 const Prediction = (state = initialState, action)=> {
     switch(action.type){
+        case Actions.RESET_PREDICTION_DATA:
+            return {
+                ...initialState
+            }
         case Actions.FETCH_PREDICTON_LOADING:
             return {
                 ...state,
+                displayPredictions: [],
                 isLoading: action.isLoading,
                 message: action.message
             }
         case Actions.FETCH_PREDICTION_SUCCESS:
-            const {prediction, past} = action.predictions
+            const {prediction, past, params} = action.predictions
+            
+            const filteredPrediction = filterPrediction(prediction, params)
             return{
                 ...state,
                 predictions: prediction,
-                displayPredictions: normalizeData(prediction),
+                displayPredictions: normalizeData(filteredPrediction),
                 message: action.message
             }
         case Actions.FETCH_PREDICTION_ERROR:
@@ -37,6 +46,26 @@ const Prediction = (state = initialState, action)=> {
         default:
             return state
     }
+}
+function getBreakPoint(params){
+    const {date, training_years} = params
+    var start_date =  moment(date)
+    var prediction_start = start_date.add(training_years, 'years')
+    var prediction_end = prediction_start.add(30, 'days')
+    const numofDays= prediction_end.diff(prediction_start.format('YYYY-MM-DD'), 'days')
+    const breakpointPct =  numofDays/(prediction_start.diff(prediction_end.format('YYYY-MM-DD'), 'days'))
+    console.log('breakpointPct', breakpointPct*100, numofDays, prediction_end.format('DD-MM-YYYY'))
+    return breakpointPct*100;
+}
+
+function filterPrediction(data =[], params = {}){
+    const {date, training_years} = params
+   
+    var prediction_start = moment(date).add(training_years, 'years')
+    return data.filter(item => {
+        const {ds} = item
+        return moment(ds).isAfter(prediction_start.format('YYYY MM DD'))
+    })
 }
 
 // function normalizeData(data){
