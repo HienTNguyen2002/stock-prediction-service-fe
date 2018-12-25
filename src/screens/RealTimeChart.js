@@ -14,11 +14,9 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import SimpleTable from './SimpleTable';
-import StockData from './StockData';
-import ParameterInfo from './ParameterInfo'
-import ParameterTuning from './ParameterTuning'
+import { mainListItems, secondaryListItems } from '../components/listItems';
+import ReduxTest from './ReduxTest'
+import Iframe from 'react-iframe';
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -100,7 +98,7 @@ const styles = theme => ({
   }
 });
 
-class Dashboard extends React.Component {
+class RealTimeChart extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -124,7 +122,7 @@ class Dashboard extends React.Component {
 
 
   render() {
-    const { classes } = this.props;
+    const { classes, predictionLoaded } = this.props;
 
     return (
       <div className={classes.root}>
@@ -152,7 +150,7 @@ class Dashboard extends React.Component {
               noWrap
               className={classes.title}
             >
-              Prediction
+              Real-Time Chart
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -180,20 +178,21 @@ class Dashboard extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-          <Typography variant="h4" gutterBottom component="h2">
-            Build Your Model
-          </Typography>
-          <Typography component="div">
-            <ParameterTuning/>
-          </Typography>
+            <Iframe url={`http://ta.vietstock.vn/?stockcode=VIC`}
+                            width="100%"
+                            height="500px"
+                            id="myId"
+                            display="initial"
+                            position="relative"
+                            allowFullScreen />
         </main>
       </div>
     );
   }
 }
 
-Dashboard.propTypes = {
+RealTimeChart.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Dashboard);
+export default withStyles(styles)(RealTimeChart);

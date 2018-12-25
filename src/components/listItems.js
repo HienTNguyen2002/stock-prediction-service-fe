@@ -9,6 +9,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 export const mainListItems = (
   <div>
@@ -29,6 +30,12 @@ export const mainListItems = (
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Models" />
+    </ListItem>
+    <ListItem button >
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Real-Time Chart" />
     </ListItem>
     {/* <ListItem button>
       <ListItemIcon>
