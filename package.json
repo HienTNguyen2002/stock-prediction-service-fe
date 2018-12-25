@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server --port $PORT --host 0.0.0.0 --inline --content-base ./src --history-api-fallback",
     "dev": "webpack-dev-server --inline --content-base ./src --history-api-fallback"
   },
   "author": "",
