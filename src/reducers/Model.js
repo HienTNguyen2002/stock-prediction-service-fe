@@ -26,6 +26,10 @@ const Model = (state = initialState, action)=> {
                 hasError: action.hasErrored,
                 message: action.message
             }
+        case Actions.RESET_MODEL_DATA:
+            return{
+                ...initialState
+            }
         default:
             return state
     }
