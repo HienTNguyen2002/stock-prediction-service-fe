@@ -11,6 +11,12 @@ function buildModelError(bool) {
     };
 }
 
+function resetModelData(){
+    return {
+        type: Actions.RESET_MODEL_DATA
+    }
+}
+
 function buildModelStarted(bool) {
     return {
         type: Actions.BUILD_MODEL_STARTED,
@@ -37,12 +43,10 @@ function buildModelSuccess(modelId) {
 
 function statusEveryTwoSeconds(modelId) {
     // We return a function instead of an action object
-    console.log('DISPATCH NE')
     return (dispatch) => {
         dispatch(buildModelLoading(true));
         intervalId = setInterval(() => {
             // This function is able to dispatch other action creators
-            console.log('Checking Statuses')
             fetch(ModelAPI.checkModelStatusApi(modelId))
             .then((response)=> {
                 console.log('RESPONSE', response)
@@ -54,7 +58,7 @@ function statusEveryTwoSeconds(modelId) {
             .then(response => response.json())
             .then(jsonResult=> {
                 const {status} = jsonResult
-                console.log(status)
+                console.log('MODEL_STATUS:', status)
                 if(status === 1){
                     dispatch(buildModelLoading(false));
                     dispatch(buildModelSuccess(modelId))
@@ -78,7 +82,7 @@ function buildModel(params) {
             method: 'POST'
         })
             .then((response) => {
-                console.log('RESPONSE', response)
+                console.log('BUILD MODEL RESPONSE', response)
                 if (!response.ok) {
                     throw Error(response.statusText);
                 }
@@ -90,7 +94,7 @@ function buildModel(params) {
             .then((response) => response.json())
             .then(({status_code}) => {
                 const {model_id, status} = status_code
-                console.log('Status_Code', status_code)
+                console.log('BUILD MODEL STATUS', status_code)
                 if(status === 1 ){
                     dispatch(buildModelSuccess(model_id))
                 }else{
@@ -103,9 +107,11 @@ function buildModel(params) {
 }
 
 export {
+    resetModelData,
     buildModel
 }
 
 export default {
+    resetModelData,
     buildModel
 }

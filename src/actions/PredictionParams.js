@@ -6,6 +6,12 @@ const updateParams = (id, value) => ({
     value
 })
 
+const resetPredictionParams = ()=> {
+    return{
+        type: Actions.RESET_PREDICTION_PARAMS
+    }
+}
+
 const loadParamConfigCompleted = (paramConfig) => ({
     type: Actions.LOAD_PARAM_CONFIG_COMPLETE,
     paramConfig
@@ -31,6 +37,7 @@ function loadParamConfig(){
 
 
 export {
+    resetPredictionParams,
     updateParams,
     loadParamConfig
 }

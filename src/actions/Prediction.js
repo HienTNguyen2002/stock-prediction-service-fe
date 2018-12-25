@@ -1,10 +1,9 @@
 import * as Actions from './ActionTypes'
 import {PredictionAPI} from '../api'
 
-function getPrediction(modelId){
-    return {
-        type: Actions.FETCH_PREDICTION,
-        modelID
+function resetPredictionData(){
+    return{
+        type: Actions.RESET_PREDICTION_DATA
     }
 }
 
@@ -31,13 +30,12 @@ export function fetchPredictionSuccess(predictions) {
     };
 }
 
-export function fetchPrediction(modelId) {
+function fetchPrediction(modelId) {
     return (dispatch) => {
         dispatch(fetchPredictionLoading(true));
-        console.log('fetching Prediction')
         fetch(PredictionAPI.getPredictionApi(modelId))
             .then((response) => {
-                console.log('PredictionAPI: ', response)
+                console.log('PREDICTION REQUEST RESPONSE: ', response)
                 if (!response.ok) {
                     throw Error(response.statusText);
                 }
@@ -48,7 +46,7 @@ export function fetchPrediction(modelId) {
             })
             .then((response) => response.json())
             .then((result) => {
-                console.log('Fetched:', result)
+                console.log('PREDICTION RESULT:', result)
                 //const {prediction} = result
                 dispatch(fetchPredictionSuccess(result))
             })
@@ -59,7 +57,11 @@ export function fetchPrediction(modelId) {
     };
 }
 
-
+export {
+    resetPredictionData,
+    fetchPrediction
+}
 export default {
-    getPrediction
+    resetPredictionData,
+    fetchPrediction
 }
