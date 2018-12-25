@@ -49,11 +49,11 @@ export function fetchPrediction(modelId) {
             .then((response) => response.json())
             .then((result) => {
                 console.log('Fetched:', result)
-                const {prediction} = result
-                dispatch(fetchPredictionSuccess(prediction))
+                //const {prediction} = result
+                dispatch(fetchPredictionSuccess(result))
             })
-            .catch(() => {
-                console.log('ERror')
+            .catch((exception) => {
+                console.log(exception)
                 dispatch(fetchPredictionError(true))
             });
     };

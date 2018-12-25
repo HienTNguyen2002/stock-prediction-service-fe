@@ -104,7 +104,7 @@ class BuildButton extends React.PureComponent{
         return(
             <div className={classes.content}>
                 <div>
-                    <Button disabled={!active} color="primary" variant="raised" onClick={this.props.onClick}>Build</Button>
+                    <Button disabled={!active} color="primary" variant="contained" onClick={this.props.onClick}>Build</Button>
                     <Typography>{message}</Typography>
                 </div>
               

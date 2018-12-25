@@ -1,11 +1,12 @@
 import * as Actions from '../actions/ActionTypes'
+import {normalizeData} from '../utils/helpers'
 
 const initialState = {
     isLoading: false,
     predictions: []
 }
 
-const Prediction = (state = [], action)=> {
+const Prediction = (state = initialState, action)=> {
     switch(action.type){
         case Actions.FETCH_PREDICTON_LOADING:
             return {
@@ -14,12 +15,18 @@ const Prediction = (state = [], action)=> {
                 message: action.message
             }
         case Actions.FETCH_PREDICTION_SUCCESS:
+            const {prediction, past} = action.predictions
             return{
                 ...state,
-                predictions: normalizeData(action.predictions),
+                predictions: prediction,
+                displayPredictions: normalizeData(prediction),
                 message: action.message
             }
-                
+        case Actions.FETCH_PREDICTION_ERROR:
+            return{
+                ...state,
+                hasError: action.hasErrored
+            }
         case Actions.FETCH_PREDICTION:
             return [
                 ...state,
@@ -32,32 +39,32 @@ const Prediction = (state = [], action)=> {
     }
 }
 
-function normalizeData(data){
-    let normalizedData = JSON.parse(JSON.stringify(data))
-    // let yhat_upperMinMax = this.getMinMaxValues(normalizedData, 'yhat_upper')
-    let yhat_lowerMinMax = getMinMaxValues(normalizedData, 'yhat_lower')
+// function normalizeData(data){
+//     let normalizedData = JSON.parse(JSON.stringify(data))
+//     // let yhat_upperMinMax = this.getMinMaxValues(normalizedData, 'yhat_upper')
+//     let yhat_lowerMinMax = getMinMaxValues(normalizedData, 'yhat_lower')
     
-    //let y_MinMax = getMinMaxValues(normalizedData, 'y')
-    let range = (yhat_lowerMinMax.max - yhat_lowerMinMax.min)
-    return normalizedData.map(item => {
-        // item.yhat_upper = (item.yhat_upper - yhat_upperMinMax.min)/(yhat_upperMinMax.max - yhat_upperMinMax.min)
-        // item.yhat_lower =  (item.yhat_lower - yhat_lowerMinMax.min)/(yhat_lowerMinMax.max - yhat_lowerMinMax.min)
-        item.yhat_upper = (item.yhat_upper - yhat_lowerMinMax.min)/range
-        item.yhat_lower = (item.yhat_lower - yhat_lowerMinMax.min)/range
-        item.y =  (item.y-yhat_lowerMinMax.min)/range
-        return item
-    })
-}
+//     //let y_MinMax = getMinMaxValues(normalizedData, 'y')
+//     let range = (yhat_lowerMinMax.max - yhat_lowerMinMax.min)
+//     return normalizedData.map(item => {
+//         // item.yhat_upper = (item.yhat_upper - yhat_upperMinMax.min)/(yhat_upperMinMax.max - yhat_upperMinMax.min)
+//         // item.yhat_lower =  (item.yhat_lower - yhat_lowerMinMax.min)/(yhat_lowerMinMax.max - yhat_lowerMinMax.min)
+//         item.yhat_upper = (item.yhat_upper - yhat_lowerMinMax.min)/range
+//         item.yhat_lower = (item.yhat_lower - yhat_lowerMinMax.min)/range
+//         item.y =  (item.y-yhat_lowerMinMax.min)/range
+//         return item
+//     }).slice(-100)
+// }
 
-function getMinMaxValues(jsonObject, key){
-    let min = Math.min.apply( null, jsonObject.map((n) => n[key]));
-    let max = Math.max.apply( null, jsonObject.map((n) => n[key]));
-    console.log(min, max)
-    return {
-        min,
-        max
-    }
-}
+// function getMinMaxValues(jsonObject, key){
+//     let min = Math.min.apply( null, jsonObject.map((n) => n[key]));
+//     let max = Math.max.apply( null, jsonObject.map((n) => n[key]));
+//     console.log(min, max)
+//     return {
+//         min,
+//         max
+//     }
+// }
 
 
 
