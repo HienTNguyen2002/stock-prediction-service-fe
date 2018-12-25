@@ -2,6 +2,8 @@ import * as Actions from '../actions/ActionTypes'
 import Strings from '../components/constants/string'
 import { isNullOrUndefined, isNumber } from 'util';
 
+var moment = require('moment')
+
 const initialState = {
     configuration: {},
     params:{
@@ -15,7 +17,11 @@ const initialState = {
         ma_lag: 1,
         training_years: 10,
         label:'close',
-        start_date: ''
+        start_date: '01-08-2018',
+        end_data:'',
+        max_training_years: 10,
+        max_date: '',
+        min_date: '',
     },
     valid: true,
     errorMessages: [],
@@ -36,6 +42,10 @@ const predictionParams = (state = initialState, action)=> {
             return {
                 ...state,
                 paramConfig
+            }
+        case Actions.RESET_PREDICTION_PARAMS:
+            return{
+                ...state,
             }
         default:
             return state
@@ -59,20 +69,24 @@ function updateParams(previousState, id, newValue){
 function validateParams(params){
     let valid = false
         
-    const {ticker, prior, ma_lag, training_years} = params
+    const {ticker, prior, ma_lag, training_years, start_date, min_date, max_date} = params
     let tickerLegit = !isNullOrUndefined(ticker)
     let priorLegit = isNumber(parseFloat(prior)) && prior >= 0 && prior < 1
     let maLagLegit = isNumber(parseInt(ma_lag)) && ma_lag > 0
     let trainingYearsLegit = isNumber(parseInt(training_years)) && training_years > 1
+    let start_dateLegit = moment(start_date).isBefore(max_date) && moment(start_date).isAfter(min_date)
   
-    if (tickerLegit && priorLegit && maLagLegit && trainingYearsLegit){
+    if (tickerLegit && priorLegit && maLagLegit && trainingYearsLegit && start_dateLegit){
         valid = true
     }
     return {
         valid,
         errorMessages:[
            !tickerLegit && Strings.INVALID_TICKER,
-           !priorLegit && Strings.PRIOR_INVALID
+           !priorLegit && Strings.PRIOR_INVALID,
+           !start_dateLegit && Strings.START_DATE_INVALID,
+           !maLagLegit && Strings.MA_INVALID,
+           !training_years && Strings.TRAINING_YEARS_INVALID
         ]
     }
 }

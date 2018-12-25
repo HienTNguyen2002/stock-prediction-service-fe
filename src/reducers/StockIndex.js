@@ -62,7 +62,6 @@ const StockIndex = (state = initialState, action)=> {
                 ...state,
                 predictionToggle: action.bool
             }
-            break;
         default:
             return state
     }
