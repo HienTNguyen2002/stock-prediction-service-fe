@@ -149,7 +149,7 @@ class ModelBuilder extends React.Component {
               noWrap
               className={classes.title}
             >
-              Prediction
+              Stock Prediction Modelling Tool
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -178,7 +178,7 @@ class ModelBuilder extends React.Component {
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Typography variant="h4" gutterBottom component="h2">
-            Build Your Model
+              Choose A Stock Index
           </Typography>
           <Typography component="div">
             <ReduxTest/>
