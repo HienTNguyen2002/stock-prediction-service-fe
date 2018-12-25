@@ -15,7 +15,12 @@ import StockDashboardSection from '../modules/StockDashboardSection'
 const styles= theme => ({
     priceChartContainer:{
         margin: 15
-    }
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing.unit * 3,
+        height: '100vh'
+      }
 })
 
 
@@ -52,12 +57,13 @@ class ReduxTest extends React.PureComponent{
 
     render()
     {
-        const {classes, stockConfigLoaded, predictionToggle, stockIndex} = this.props
+        const {classes, stockConfigLoaded, stockData, stockDataLoading, stockIndex} = this.props
+        const displayChart = !stockDataLoading && stockData != null
         console.log(stockIndex, stockConfigLoaded)
         return(
-            <div className={classes.container}>
+            <div className={classes.content}>
                 <StockDashboardSection/>
-                {predictionToggle && <PredictionSection/>}
+                {displayChart && <PredictionSection/>}
             </div>
         )
     }
@@ -76,7 +82,9 @@ ReduxTest.defaultProps = {
 const mapStateToProps = ({PredictionParams, Model, Prediction, StockIndex}) => ({
      ...PredictionParams,
      labels: StockIndex.labels,
-     predictionToggle: StockIndex.predictionToggle
+     predictionToggle: StockIndex.predictionToggle,
+     stockDataLoading: StockIndex.stockDataLoading,
+     stockData: StockIndex.data
   })
 
 
