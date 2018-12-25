@@ -1,9 +1,12 @@
 import React from 'react'
 import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
+import FormLabel from '@material-ui/core/FormLabel'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Slider from '@material-ui/lab/Slider';
+
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -58,6 +61,12 @@ const styles = theme => ({
         this.updateParams(id, value)
     }
 
+    onSliderchange(event, value){
+        const {target} = event
+        const {id} = target
+        this.updateParams(id, value)
+    }
+
     updateParams(id, value){
         const {updateParams} = this.props
         updateParams(id, value)
@@ -69,43 +78,104 @@ const styles = theme => ({
         if(!paramConfig || !params){
             return <div></div>
         }
+
+        const components = this.parseConfig(paramConfig)
+        console.log('Elements', components)
+        return components
         
-        let elements = paramConfig.map((item, index) => {
-            const {label, active, id } = item
-            let bodyElement = {}
-            if(!active) return
+        // let elements = paramConfig.map((item, index) => {
+        //     const {label, active, id } = item
+        //     let bodyElement = {}
+        //     if(!active) return
 
-            bodyElement = this.getElement(item)
+        //     bodyElement = this.getElement(item)
 
-            return (
-            <Grid key={`div-${id}`} item xs className={classes.itemGrid}>
-                <div >
-                    <Typography component="div" variant="body1" className={classes.label}>{label}</Typography>
-                    {bodyElement}
-                </div>
-            </Grid>
-            )
-        })
-        return elements
+        //     return bodyElement 
+        // })
+        // return (
+        //     <FormGroup className={classes.itemGrid}>
+        //         <FormLabel component="legend">Parameters</FormLabel>
+        //         {elements}
+        //     </FormGroup>
+        //     )
     }
 
-    getElement(item){
-        let bodyElement = {}
-        let {params} = this.props
-
-        const {id, element, type} = item
-        switch(element){
-            case "checkbox":
-                bodyElement = <Checkbox id={id} checked={params[id]} onChange={this.onCheckBoxChange.bind(this)}/>
-                break;
-            case "textbox":
-                bodyElement = <Input id={id} type={type} value={params[id]} onChange={this.onTextBoxChange.bind(this)}/>
-                break;
-            default:
-                bodyElement = null
+    parseConfig(config, id = ""){
+        const {element, active}  = config
+        if (!element){
+            return Object.keys(config).map(key => {
+                const subConfig = config[key]
+                return this.parseConfig(subConfig, key)
+            })
         }
-        return bodyElement
+        
+        if(!active)
+            return
+
+        const {params, valid} = this.props
+        const {label, additionalProps, children} = config
+        console.log(active, element)
+        
+        let type, labelPlacement = ""
+        if(additionalProps){
+            type = additionalProps.type;
+            labelPlacement = additionalProps.labelPlacement
+        }
+
+        let bodyElement = {}
+
+        switch(element){
+            case "controlGroup":
+                return <Paper style={{margin: 5}} elevation={valid ? 1 : 5}>
+                    <FormGroup style={{margin: 5}}>
+                        <FormLabel component="legend" style={{margin: 5}}>{label}</FormLabel>
+                        {this.parseConfig(children, id) }
+                    </FormGroup>
+                </Paper>
+            case "checkbox":
+                bodyElement = <Checkbox id={id}  checked={params[id]} onChange={this.onCheckBoxChange.bind(this)}/>
+                return <FormControlLabel id={id}  control={bodyElement} label={label} labelPlacement={labelPlacement ? labelPlacement : "end"}/>
+            case "textbox":
+                bodyElement = <TextField id={id}   type={type} value={params[id]} onChange={this.onTextBoxChange.bind(this)}/>
+                return <FormControlLabel id={id} control={bodyElement} label={label} labelPlacement={labelPlacement ? labelPlacement : "end"}/>
+            case "slider":
+                const {max_key, step} = additionalProps
+                bodyElement = (
+                    <Slider
+                                    style={{minWidth: 200, margin: 20}} 
+                                    min={1} 
+                                    max={parseFloat(params[max_key])} 
+                                    step={step} 
+                                    value={params[id]} 
+                                    onChange={this.onSliderchange.bind(this)}></Slider>
+                )
+                return <FormControlLabel id={id} control={bodyElement} label={Number(params[id]).toFixed(1) + " " + label} labelPlacement={labelPlacement ? labelPlacement : "end"}/>
+            default:
+                return <FormControlLabel control={<div></div>}/>
+        }
+        
     }
+
+    // getElement(item){
+    //     let bodyElement = {}
+    //     let {params} = this.props
+
+    //     const {id, element, type, label, labelPlacement} = item
+    //     switch(element){
+    //         case "checkbox":
+    //             bodyElement = 
+    //             break;
+    //         case "textbox":
+    //             bodyElement = 
+    //             break;
+    //         case "slider":
+    //             break;
+    //         default:
+    //             bodyElement = <div></div>
+    //     }
+    //     console.log(label)
+    //     return <FormControlLabel labelPlacement={labelPlacement} control={bodyElement} label={label}/>
+    // }
   
 
     render(){

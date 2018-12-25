@@ -1,81 +1,139 @@
 {
-    "parameters": [
-        {
-            "id": "ticker",
-            "label": "Stock Ticker",
-            "element": "textbox",
-            "type": "string",
-            "active": false       
+    "parameters": {
+            "Group1":{
+                "label": "Control Group 1",
+                "element": "controlGroup",
+                "active": true,
+                "additionalProps":{},
+                "children": {
+                    "ticker": {
+                        "label": "Stock Ticker",
+                        "element": "textbox",
+                        "active": false,
+                        "additionalProps": {
+                            "type": "string",
+                            "labelPlacement": "top"
+                        }     
+                    },
+                    "training_years": {
+                        "label": "Years of training data",
+                        "element": "slider",
+                        "active": true,
+                        "additionalProps": {
+                            "type": "number",
+                            "labelPlacement": "top",
+                            "step": 0.1,
+                            "max_key": "max_training_years"
+                        }
+                    },
+                    "start_date": {
+                        "label": "Prediction Start",
+                        "element": "textbox",
+                        "active": true,
+                        "additionalProps": {
+                            "type": "date",
+                            "labelPlacement": "top"
+                        }  
+                    }
+                }
         },
-        {
-            "id": "label",
-            "label": "Label Data",
-            "element": "textbox",
-            "type": "string",
-            "active": true       
+        "group2":{
+            "label": "Control Group 2",
+            "element": "controlGroup",
+            "active": true,
+            "additionalProps": {},
+            "children":{
+                "label": {
+                    "label": "Label Data",
+                    "element": "textbox",
+                    "type": "string",
+                    "active": false,
+                    "additionalProps": {
+                        "type": "string",
+                        "labelPlacement": "top"
+                    }       
+                },
+                "prior": {
+                    "label": "Changepoints prior",
+                    "element": "textbox",
+                    "active": true,
+                    "additionalProps": {
+                        "type": "number",
+                        "labelPlacement": "top"
+                    }       
+                },
+                "ma_lag": {
+                    "label": "Moving Average Lag",
+                    "element": "textbox",
+                    "active": true,
+                    "additionalProps": {
+                        "type": "number",
+                        "labelPlacement": "top"
+                    }
+                }
+            }
         },
-        {
-            "id": "start_date",
-            "label": "Prediction Start",
-            "element": "textbox",
-            "type": "string",
-            "active": true       
-        },
-        {
-            "id": "daily_ssl",
-            "label": "Daily Seasonality",
-            "element": "checkbox",
-            "type": "boolean",
-            "active": true
-        },
-        {
-            "id": "wkly_ssl",
-            "label": "Weekly Seasonality",
-            "element": "checkbox",
-            "type": "boolean",
-            "active": true
-        },
-        {
-            "id": "mthly_ssl",
-            "label": "Monthly Seasonality",
-            "element": "checkbox",
-            "type": "boolean",
-            "active": true
-        },
-        {
-            "id": "qrtly_ssl",
-            "label": "Quarterly Seasonality",
-            "element": "checkbox",
-            "type": "boolean",
-            "active": true
-        },
-        {
-            "id": "yrly_ssl",
-            "label": "Yearly Seasonality",
-            "element": "checkbox",
-            "type": "boolean",
-            "active": true
-        },
-        {
-            "id": "training_years",
-            "label": "Training Years",
-            "element": "textbox",
-            "type": "number",
-            "active": true        
-        },
-        {
-            "id": "prior",
-            "label": "Changepoints prior",
-            "element": "textbox",
-            "type": "number",
-            "active": true       
-        },
-        {
-            "id": "ma_lag",
-            "label": "Moving Average Lag",
-            "element": "textbox",
-            "type": "number",
-            "active": true
+        "group3":{
+            "label": "Control Group 3",
+            "element": "controlGroup",
+            "active": true,
+            "additionalProps": {},
+            "children":{
+                "daily_ssl": {
+                    "label": "Daily Seasonality",
+                    "element": "checkbox",
+                    "active": true,
+                    "addtionalProps":{
+                        "type": "boolean",
+                        "labelPlacement": "end"
+                    }
+                },
+                "wkly_ssl": {
+                    "label": "Weekly Seasonality",
+                    "element": "checkbox",
+                    "active": true,
+                    "addtionalProps":{
+                        "type": "boolean",
+                        "labelPlacement": "end"
+                    }
+                },
+                "mthly_ssl": {
+                    "label": "Monthly Seasonality",
+                    "element": "checkbox",
+                    "active": true,
+                    "addtionalProps":{
+                        "type": "boolean",
+                        "labelPlacement": "end"
+                    }
+                },
+                "qrtly_ssl": {
+                    "label": "Quarterly Seasonality",
+                    "element": "checkbox",
+                    "active": true,
+                    "addtionalProps":{
+                        "type": "boolean",
+                        "labelPlacement": "end"
+                    }
+                },
+                "yrly_ssl": {
+                    "label": "Yearly Seasonality",
+                    "element": "checkbox",
+                    "active": true,
+                    "addtionalProps":{
+                        "type": "boolean",
+                        "labelPlacement": "end"
+                    }
+                },
+                "training_years": {
+                    "label": "Training Years",
+                    "element": "textbox",
+                    "active": false,
+                    "additionalProps": {
+                        "type": "number",
+                        "labelPlacement": "top"
+                    }        
+                }
+            }
         }
-    ]
+    }
 }
