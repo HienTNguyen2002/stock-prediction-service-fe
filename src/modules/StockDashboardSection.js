@@ -16,7 +16,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import PriceChart from '../components/stock-core/PriceChart'
 
-import {updateParams} from '../actions/PredictionParams'
+import {updateParams, resetPredictionParams} from '../actions/PredictionParams'
+import {resetModelData} from '../actions/Model'
+import {resetPredictionData} from '../actions/Prediction'
 import {fetchStockData, updateLabelStates, togglePrediction} from '../actions/StockIndex'
 import {titleCase} from '../utils/helpers'
 
@@ -35,7 +37,6 @@ const styles = theme => ({
 
 var moment = require('moment')
 class StockDashboardSection extends React.PureComponent{
-
     renderStockInfo(){
         const {params, classes, stockDescription} = this.props
 
@@ -50,7 +51,7 @@ class StockDashboardSection extends React.PureComponent{
         return(
             <div>
                 <Typography className={classes.stockInfoContainer} variant="h5" component="h5" gutterBottom>
-                    Historical Price Data of {params.ticker} on {params.label}
+                    Historical Data of {params.ticker}
                 </Typography>
                 {Object.keys(stockDescription).map(key=>{
                     let title =  titleCase(key.split('_').join(' '))
@@ -59,7 +60,7 @@ class StockDashboardSection extends React.PureComponent{
                         content = content.toUpperCase()
                     }
                     if (key === 'max_date' || key === 'min_date'){
-                        content = moment(content).format('Mo-DD-YYYY')
+                        content = moment(content).format('MMM DD YYYY')
                     }
                     return getInfoComponent(title, content)
                 })}
@@ -72,7 +73,6 @@ class StockDashboardSection extends React.PureComponent{
         const {updateLabelStates} = this.props
         let {target} = event
         let {id} = target
-        console.log(target, id)
         updateLabelStates(id, value)
     }
 
@@ -104,21 +104,27 @@ class StockDashboardSection extends React.PureComponent{
         )
     }
 
+    resetDefaultData(){
+        const {resetModelData, resetPredictionData, resetPredictionParams} = this.props
+        resetModelData()
+        resetPredictionData()
+        resetPredictionParams()
+    }
+
     render(){
         const {tickerList, params, stockDataLoading, stockDescription, displayLabels, stockData} = this.props
         const displayChart = !stockDataLoading && stockData != null
 
-        console.log('displayLabels: ',displayLabels ) 
         return(
             <div>
                 <Paper style={{maxHeight: 200, overflow: 'auto'}}>
                     <List component="nav" >
                         {tickerList.map(stockIndex => {
                             const ticker = stockIndex['ticker']
-                            console.log(ticker, params.ticker)
                             return (
                             <MenuItem key={ticker} disabled={stockDataLoading} button selected={ticker === params.ticker} onClick={({target})=>{
                                 this.props.updateParams('ticker', ticker)
+                                this.resetDefaultData()
                                 this.props.fetchStockData(ticker)
                             }}>
                                 <ListItemText primary={ticker}/>
@@ -129,7 +135,6 @@ class StockDashboardSection extends React.PureComponent{
                 {displayChart && this.renderStockInfo()}
                 {displayChart && this.renderLabels()}
                 {displayChart && <PriceChart data={this.props.stockData} labels={displayLabels}/>}
-                {displayChart && this.togglePrediction()}
             </div>  
         )
     }
@@ -152,7 +157,10 @@ const mapDispatchToProps = (dispatch) => ({
     updateParams: (id, value) => dispatch(updateParams(id, value)),
     fetchStockData: (ticker) => dispatch(fetchStockData(ticker)),
     updateLabelStates: (id, value) => dispatch(updateLabelStates(id, value)),
-    togglePrediction: (bool) => dispatch(togglePrediction(bool))
+    togglePrediction: (bool) => dispatch(togglePrediction(bool)),
+    resetPredictionParams: ()=> dispatch(resetPredictionParams()),
+    resetModelData: () => dispatch(resetModelData()),
+    resetPredictionData: ()=> dispatch(resetPredictionData())
 })
 
 export default connect(
