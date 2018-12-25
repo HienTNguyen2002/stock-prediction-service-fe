@@ -13,5 +13,10 @@ module.exports = {
         exclude: /node_modules/, 
         loader: 'babel-loader?presets[]=es2015&presets[]=react&presets[]=stage-2' }
     ]
+  },
+
+  devServer: {
+    compress: true,
+    disableHostCheck: true
   }
 }
