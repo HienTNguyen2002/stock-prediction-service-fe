@@ -1,6 +1,7 @@
 import * as Actions from './ActionTypes'
 import {StockIndexAPI} from '../api'
-
+import {updateParams} from './PredictionParams'
+var moment = require('moment')
 function getStockData(ticker){
     return {
         type: Actions.FETCH_STOCK_DATA,
@@ -101,15 +102,29 @@ export function fetchStockData(ticker) {
             })
             .then((response) => response.json())
             .then((result) => {
-                //const {StockData} = result
+                const {info} = result
+                const {max_date, min_date} = info
+               
+                let end_date = moment(max_date).subtract(1,'days')
+                let start_date = moment(min_date)
+            
+                const training_years= end_date.diff(start_date.format('YYYY-MM-DD'), 'years', true)
+
+                dispatch(updateParams('start_date', end_date.format('YYYY-MM-DD')))
+                dispatch(updateParams('training_years', Number(training_years).toFixed(2)))
+                dispatch(updateParams('max_training_years', Number(training_years).toFixed(2)-1))
+                dispatch(updateParams('min_date',min_date))
+                dispatch(updateParams('max_date', max_date))
+
                 dispatch(fetchStockDataSuccess(result))
             })
-            .catch(() => {
-                console.log('ERror')
+            .catch((exception) => {
+                console.log(exception)
                 dispatch(fetchStockDataError(true))
             });
     };
 }
+
 
 export {
     togglePrediction,

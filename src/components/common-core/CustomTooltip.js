@@ -23,7 +23,6 @@ class CustomTooltip extends React.Component{
         
         if (active) {
           const { payload, label } = this.props;
-          console.log(payload)
           return (
             <Typography component='div' style={{display: 'inline-block'}}>
               <Typography variant='body1'>{label}</Typography>

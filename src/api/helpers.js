@@ -17,10 +17,11 @@ const buildModelParamsUrl = params => {
     if(yrly_ssl){
         seasonalities += 'y-'
     }
-    console.log(start_date, moment(start_date).format('DD-MM-YYYY'))
-    const date = moment(start_date).format('YYYY-MM-DD')
+  
     seasonalities = seasonalities.substring(0, seasonalities.length-1)
-    return `/${ticker}?seasonalities=${seasonalities}&prior=${prior}&lag=${ma_lag}&start-date=${date}&label=${label}&training_years=${training_years}`
+    let real_start_date = moment(start_date).subtract(training_years, 'years')
+    const date = real_start_date.format('YYYY-MM-DD')
+    return `/${ticker}?seasonalities=${seasonalities}&prior=${prior}&lag=${ma_lag}&start-date=${date}&label=${label}&training-years=${Number(training_years).toFixed(2)}`
 }
 
 export {
