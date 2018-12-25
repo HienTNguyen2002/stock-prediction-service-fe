@@ -23,6 +23,7 @@ function normalizeData(data){
     let normalizedData = JSON.parse(JSON.stringify(data))
     // let yhat_upperMinMax = this.getMinMaxValues(normalizedData, 'yhat_upper')
     let yhat_lowerMinMax = getMinMaxValues(normalizedData, 'yhat_lower')
+    console.log('MinMax:', yhat_lowerMinMax)
     
     //let y_MinMax = getMinMaxValues(normalizedData, 'y')
     let range = (yhat_lowerMinMax.max - yhat_lowerMinMax.min)
@@ -33,12 +34,18 @@ function normalizeData(data){
         item.yhat_lower = (item.yhat_lower - yhat_lowerMinMax.min)/range
         item.y =  (item.y-yhat_lowerMinMax.min)/range
         return item
-    }).slice(-100)
+    })
 }
 
 function getMinMaxValues(jsonObject, key){
-    let min = Math.min.apply( null, jsonObject.map((n) => n[key]));
-    let max = Math.max.apply( null, jsonObject.map((n) => n[key]));
+    let min = Math.min.apply( null, jsonObject.map((n) => {
+        if (n[key] !== 0)
+            return n[key]
+    }));
+    let max = Math.max.apply( null, jsonObject.map((n) => {
+        if(n[key] !== 0)
+            return n[key]
+    }));
     console.log(min, max)
     return {
         min,
