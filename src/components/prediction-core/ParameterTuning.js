@@ -40,6 +40,9 @@ const styles = theme => ({
     },
     button:{
         backgroundColor: 'blue'
+    },
+    formLabel: {
+        margin: 5
     }
 });
 
@@ -74,13 +77,11 @@ const styles = theme => ({
 
     generateParamTuners(){
         const { classes, paramConfig, params} = this.props;
-        console.log('TUNERS',paramConfig)
         if(!paramConfig || !params){
             return <div></div>
         }
 
         const components = this.parseConfig(paramConfig)
-        console.log('Elements', components)
         return components
         
         // let elements = paramConfig.map((item, index) => {
@@ -114,7 +115,6 @@ const styles = theme => ({
 
         const {params, valid} = this.props
         const {label, additionalProps, children} = config
-        console.log(active, element)
         
         let type, labelPlacement = ""
         if(additionalProps){
@@ -126,7 +126,7 @@ const styles = theme => ({
 
         switch(element){
             case "controlGroup":
-                return <Paper style={{margin: 5}} elevation={valid ? 1 : 5}>
+                return <Paper id={id} key={id} style={{margin: 5}} elevation={valid ? 1 : 5}>
                     <FormGroup style={{margin: 5}}>
                         <FormLabel component="legend" style={{margin: 5}}>{label}</FormLabel>
                         {this.parseConfig(children, id) }
@@ -134,10 +134,10 @@ const styles = theme => ({
                 </Paper>
             case "checkbox":
                 bodyElement = <Checkbox id={id}  checked={params[id]} onChange={this.onCheckBoxChange.bind(this)}/>
-                return <FormControlLabel id={id}  control={bodyElement} label={label} labelPlacement={labelPlacement ? labelPlacement : "end"}/>
+                return <FormControlLabel style={{margin: 5}} id={id}  control={bodyElement} label={label} labelPlacement={labelPlacement ? labelPlacement : "end"}/>
             case "textbox":
                 bodyElement = <TextField id={id}   type={type} value={params[id]} onChange={this.onTextBoxChange.bind(this)}/>
-                return <FormControlLabel id={id} control={bodyElement} label={label} labelPlacement={labelPlacement ? labelPlacement : "end"}/>
+                return <FormControlLabel key={id} style={{margin: 5}} id={id} control={bodyElement} label={label} labelPlacement={labelPlacement ? labelPlacement : "end"}/>
             case "slider":
                 const {max_key, step} = additionalProps
                 bodyElement = (
@@ -149,9 +149,9 @@ const styles = theme => ({
                                     value={params[id]} 
                                     onChange={this.onSliderchange.bind(this)}></Slider>
                 )
-                return <FormControlLabel id={id} control={bodyElement} label={Number(params[id]).toFixed(1) + " " + label} labelPlacement={labelPlacement ? labelPlacement : "end"}/>
+                return <FormControlLabel key={id} id={id} control={bodyElement} label={Number(params[id]).toFixed(1) + " " + label} labelPlacement={labelPlacement ? labelPlacement : "end"}/>
             default:
-                return <FormControlLabel control={<div></div>}/>
+                return <FormControlLabel key={id} control={<div></div>}/>
         }
         
     }

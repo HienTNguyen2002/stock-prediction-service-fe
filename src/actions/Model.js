@@ -1,5 +1,6 @@
 import * as Actions from './ActionTypes'
 import {ModelAPI} from '../api'
+import {fetchPrediction} from './Prediction'
 
 var intervalId = 0
 
@@ -41,7 +42,7 @@ function buildModelSuccess(modelId) {
     };
 }
 
-function statusEveryTwoSeconds(modelId) {
+function statusEveryTwoSeconds(modelId, days) {
     // We return a function instead of an action object
     return (dispatch) => {
         dispatch(buildModelLoading(true));
@@ -63,6 +64,7 @@ function statusEveryTwoSeconds(modelId) {
                     dispatch(buildModelLoading(false));
                     dispatch(buildModelSuccess(modelId))
                     clearInterval(intervalId)
+                    dispatch(fetchPrediction(modelId, days))
                 }
                 if(status === -2 ){
                     dispatch(buildModelError(true))
@@ -97,8 +99,9 @@ function buildModel(params) {
                 console.log('BUILD MODEL STATUS', status_code)
                 if(status === 1 ){
                     dispatch(buildModelSuccess(model_id))
+                    dispatch(fetchPrediction(model_id, params['days']))
                 }else{
-                    dispatch(statusEveryTwoSeconds(model_id))
+                    dispatch(statusEveryTwoSeconds(model_id, params['days']))
                 }
                
             })

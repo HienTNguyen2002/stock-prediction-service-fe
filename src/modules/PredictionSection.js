@@ -45,10 +45,12 @@ var moment = require('moment')
 
 class PredictionSection extends React.PureComponent{
     componentWillReceiveProps(nextProps){
-        const {currentModel, updateParams, fetchPrediction, stockDescription} = nextProps
-        const {modelId} = currentModel
-        console.log('Current Model ID:', modelId)
-        modelId !== this.props.currentModel.modelId &&  fetchPrediction(modelId)
+        // const {currentModel, params, fetchPrediction, stockDescription} = nextProps
+        // const {modelId} = currentModel
+        // // const {days} = params
+        // // console.log('Current Model ID:', modelId)
+        // const loadNewPrediction =  (modelId !== this.props.currentModel.modelId)
+        // loadNewPrediction&&  this.scrollToBottom()
     }
 
     renderErrorMessages(){
@@ -93,7 +95,6 @@ class PredictionSection extends React.PureComponent{
 
     renderPredictionChart(){
         const { displayData, params, actualData, classes, breakpointPct} = this.props
-        console.log('rendering prediction chart', displayData)
         if (!displayData || displayData.length === 0)
             return <div></div>
         return(
@@ -117,7 +118,6 @@ class PredictionSection extends React.PureComponent{
 
     buildModel(){
         const {buildModel, stockDescription, params} = this.props
-      
         buildModel(params)
     }
 
@@ -128,7 +128,7 @@ class PredictionSection extends React.PureComponent{
     renderTuners(){
         const {params, valid} =this.props
         return(
-            <Grid container xs style={{display: 'flex', marginBottom: 20, marginTop: 20}}>
+            <Grid container style={{display: 'flex', marginBottom: 20, marginTop: 20}}>
                 {/* <Grid item style={{alignItems:'flex-start', margin: 15}}>
                     <Typography variant='subtitle2' style={{margin: 10}}>Years of training data</Typography>
                     <FormControlLabel control={slider} label={Number(params.training_years).toFixed(1)}/> 
@@ -144,12 +144,15 @@ class PredictionSection extends React.PureComponent{
         )
     }
 
+    scrollToBottom = () => {
+        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+      }
+
     render(){
-        console.log('render model builder')
         const {valid, classes, params} = this.props
         
         return(
-            <div style={{marginLeft: 10}}>
+            <div style={{marginLeft: 10, flexGrow:1}}>
                  <div component='div' className={classes.tunerContainers}>
                     <div>
                         <Typography variant="h5">{`Build Prediction Model For ${params.ticker}`}</Typography>
@@ -158,8 +161,11 @@ class PredictionSection extends React.PureComponent{
                     {this.renderErrorMessages()}
                     {this.renderMessages()}
                     <BuildButton active={valid} onClick={this.buildModel.bind(this)}/>
+                    {this.renderPredictionChart()}
                 </div>       
-                {this.renderPredictionChart()}
+                <div style={{ float:"left", clear: "both" }}
+                        ref={(el) => { this.messagesEnd = el; }}>
+                </div>
             </div>
         )
     }
@@ -186,7 +192,7 @@ const mapStateToProps = ({Model, PredictionParams, Prediction, StockIndex}) => (
 const mapDispatchToProps = (dispatch) => ({
     updateParams: (id, value) => dispatch(updateParams(id, value)),
     buildModel: (params) => dispatch(buildModel(params)),
-    fetchPrediction: (modelId) => dispatch(fetchPrediction(modelId)),
+    fetchPrediction: (modelId, days) => dispatch(fetchPrediction(modelId, days)),
 })
 
 export default connect(

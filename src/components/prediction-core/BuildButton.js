@@ -11,10 +11,7 @@ const styles = theme => ({
     margin: theme.spacing.unit * 2,
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3,
-    height: '100vh',
-    overflow: 'auto',
+      marginBottom: 20
   },
 });
 

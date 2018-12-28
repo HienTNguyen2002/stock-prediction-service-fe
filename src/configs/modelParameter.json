@@ -1,7 +1,7 @@
 {
     "parameters": {
             "Group1":{
-                "label": "Control Group 1",
+                "label": "Training",
                 "element": "controlGroup",
                 "active": true,
                 "additionalProps":{},
@@ -38,7 +38,7 @@
                 }
         },
         "group2":{
-            "label": "Control Group 2",
+            "label": "Change Effect",
             "element": "controlGroup",
             "active": true,
             "additionalProps": {},
@@ -74,7 +74,7 @@
             }
         },
         "group3":{
-            "label": "Control Group 3",
+            "label": "Seasonalities",
             "element": "controlGroup",
             "active": true,
             "additionalProps": {},
@@ -132,6 +132,24 @@
                         "type": "number",
                         "labelPlacement": "top"
                     }        
+                }
+            }
+        },
+        "group4:":{
+            "label": "Future",
+            "element": "controlGroup",
+            "active": true,
+            "additionalProps": {},
+            "children":{
+                "days": {
+                    "label": "Days in the future",
+                    "element": "textbox",
+                    "active": true,
+                    "additionalProps": {
+                        "type": "number",
+                        "step": 1,
+                        "labelPlacement": "top"
+                    }  
                 }
             }
         }

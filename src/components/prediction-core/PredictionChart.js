@@ -18,12 +18,6 @@ import CustomChart from '../common-core/CustomChart'
 var moment= require('moment')
 
 const styles = theme=> ({
-    chartContainer:{
-        maxHeight: 300
-    },
-    spanButtonContainer:{
-        display: "inline-block"
-    }
 })
 
 class PredictionChart extends React.Component{

@@ -15,12 +15,7 @@ import StockDashboardSection from '../modules/StockDashboardSection'
 const styles= theme => ({
     priceChartContainer:{
         margin: 15
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing.unit * 3,
-        height: '100vh'
-      }
+    }
 })
 
 
@@ -57,11 +52,10 @@ class ReduxTest extends React.PureComponent{
 
     render()
     {
-        const {classes, stockConfigLoaded, stockData, stockDataLoading, stockIndex} = this.props
+        const {stockData, stockDataLoading, stockIndex} = this.props
         const displayChart = !stockDataLoading && stockData != null
-        console.log(stockIndex, stockConfigLoaded)
         return(
-            <div className={classes.content}>
+            <div>
                 <StockDashboardSection/>
                 {displayChart && <PredictionSection/>}
             </div>

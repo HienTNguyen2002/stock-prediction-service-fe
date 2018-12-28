@@ -17,14 +17,6 @@ import CustomChart from '../common-core/CustomChart'
 
 var moment= require('moment')
 const styles = {
-    container:{
-        marginLeft: 0
-    },
-    spanButtonContainer:{
-        display: "inline-block",
-        margin:5,
-        marginLeft: 10
-    }
 }
 
 class PriceChart extends React.PureComponent{

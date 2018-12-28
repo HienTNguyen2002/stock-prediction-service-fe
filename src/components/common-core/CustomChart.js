@@ -24,7 +24,7 @@ class CustomChart extends React.PureComponent{
         const {classes, className, styles} = this.props
         return(
             <span>
-                <ResponsiveContainer className={[classes.chartContainer, className]}>
+                <ResponsiveContainer>
                     <ComposedChart  data={this.props.data}>
                        {this.props.children}
                     </ComposedChart>

@@ -18,10 +18,11 @@ const initialState = {
         training_years: 10,
         label:'close',
         start_date: '01-08-2018',
-        end_data:'',
+        end_date:'',
         max_training_years: 10,
         max_date: '',
         min_date: '',
+        days: 30,
     },
     valid: true,
     errorMessages: [],
@@ -31,14 +32,12 @@ const predictionParams = (state = initialState, action)=> {
     switch(action.type){
         case Actions.UPDATE_PARAMS:
             const {id, value} = action;
-            console.log('ID', id)
             return{
                 ...state, 
                 ...updateParams(state, id, value)
             }
         case Actions.LOAD_PARAM_CONFIG_COMPLETE:
             const {paramConfig} = action
-            console.log('PARAM CONFIG:', paramConfig)
             return {
                 ...state,
                 paramConfig
@@ -57,8 +56,12 @@ function updateParams(previousState, id, newValue){
     const newParams = {...params}
     newParams[id] = newValue
 
+    if(id === 'training_years'){
+        const end_date = moment(newParams['start_date']).subtract(newValue,'years').format('YYYY-MM-DD')
+        newParams['end_date'] = end_date
+    }
+
     const {valid, errorMessages} =  validateParams(newParams) 
-    console.log(newParams)
     return {
         params: newParams,
         errorMessages, 

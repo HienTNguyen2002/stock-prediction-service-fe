@@ -24,11 +24,11 @@ const Prediction = (state = initialState, action)=> {
         case Actions.FETCH_PREDICTION_SUCCESS:
             const {prediction, past, params} = action.predictions
             
-            const filteredPrediction = filterPrediction(prediction, params)
+            //const filteredPrediction = filterPrediction(prediction, params)
             return{
                 ...state,
-                predictions: prediction,
-                displayPredictions: normalizeData(filteredPrediction),
+                predictions: past,
+                displayPredictions: normalizeData(prediction),
                 message: action.message
             }
         case Actions.FETCH_PREDICTION_ERROR:

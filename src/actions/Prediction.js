@@ -30,10 +30,10 @@ export function fetchPredictionSuccess(predictions) {
     };
 }
 
-function fetchPrediction(modelId) {
+function fetchPrediction(modelId, days) {
     return (dispatch) => {
         dispatch(fetchPredictionLoading(true));
-        fetch(PredictionAPI.getPredictionApi(modelId))
+        fetch(PredictionAPI.getPredictionApi(modelId, days))
             .then((response) => {
                 console.log('PREDICTION REQUEST RESPONSE: ', response)
                 if (!response.ok) {
