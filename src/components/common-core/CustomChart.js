@@ -23,13 +23,13 @@ class CustomChart extends React.PureComponent{
     render(){
         const {classes, className, styles} = this.props
         return(
-            <span>
+            <div>
                 <ResponsiveContainer>
                     <ComposedChart  data={this.props.data}>
                        {this.props.children}
                     </ComposedChart>
                 </ResponsiveContainer>
-            </span>
+            </div>
            
         )
     }

@@ -38,19 +38,25 @@ class PriceChart extends React.PureComponent{
         const {labels, data, classes} = this.props
         const {left, right} = this.state
         return(
-            <CustomChart {...this.props}>
-                <Legend />
-                <XAxis dataKey='ds' tickFormatter={this.tickFormatter} allowDataOverflow={true} padding={{left,right}}/>
-                <YAxis/>
-                <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                <Tooltip content={<PriceTooltip data={this.props.actualData}/>}/>
-                <Brush dataKey='ds' height={30} stroke="#8884d8"/>
-                {
-                    labels.map(label=>{
-                        return <Line key={label} type="monotone" dataKey={label} stroke="red" dot={false}/>
-                    })
-                }
-            </CustomChart>
+            <div style={{height: 300}}>
+                <CustomChart {...this.props}>
+                    <Legend />
+                    <XAxis dataKey='ds' tickFormatter={this.tickFormatter}  padding={{left,right}}/>
+                    <YAxis allowDataOverflow={true}/>
+                    <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                    <Tooltip content={<PriceTooltip data={this.props.actualData}/>}/>
+                    <Brush dataKey='ds' 
+                        height={30}
+                        startIndex={0}
+                        endIndex={100} 
+                        stroke="#8884d8"/>
+                    {
+                        labels.map(label=>{
+                            return <Line key={label} type="monotone" dataKey={label} stroke="blue" dot={false}/>
+                        })
+                    }
+                </CustomChart>
+            </div>
         )
     }
   

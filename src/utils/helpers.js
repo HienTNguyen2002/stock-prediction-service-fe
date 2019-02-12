@@ -1,3 +1,4 @@
+var moment = require('moment')
 function fetchUrl(url, method = 'GET'){
     let result = {}
     try{
@@ -18,12 +19,34 @@ function fetchUrl(url, method = 'GET'){
     return result
 }
 
-function normalizeData(data){
-    console.log(data)
+function filterDatabByParams(data =[], params = {}){
+    const {start_date, training_years} = params
+    var prediction_start = moment(start_date)
+    return data.filter(item => {
+        const {ds} = item
+        return moment(ds).isAfter(prediction_start.format('YYYY MM DD'))
+    })
+}
+
+function normalizeData(data, key){
+    // let yhat_upperMinMax = this.getMinMaxValues(normalizedData, 'yhat_upper')
+    let minMaxValues = getMinMaxValues(data, key)
+    
+    //let y_MinMax = getMinMaxValues(normalizedData, 'y')
+    let range = (minMaxValues.max - minMaxValues.min)
+    return data.map(item => {
+        // item.yhat_upper = (item.yhat_upper - yhat_upperMinMax.min)/(yhat_upperMinMax.max - yhat_upperMinMax.min)
+        // item.yhat_lower =  (item.yhat_lower - yhat_lowerMinMax.min)/(yhat_lowerMinMax.max - yhat_lowerMinMax.min)
+        let t = {...item}
+        t[key] = (item[key]-minMaxValues.min)/range
+        return t
+    })
+}
+
+function normalizePrediction(data){
     let normalizedData = JSON.parse(JSON.stringify(data))
     // let yhat_upperMinMax = this.getMinMaxValues(normalizedData, 'yhat_upper')
     let yhat_lowerMinMax = getMinMaxValues(normalizedData, 'yhat_lower')
-    console.log('MinMax:', yhat_lowerMinMax)
     
     //let y_MinMax = getMinMaxValues(normalizedData, 'y')
     let range = (yhat_lowerMinMax.max - yhat_lowerMinMax.min)
@@ -46,7 +69,6 @@ function getMinMaxValues(jsonObject, key){
         if(n[key] !== 0)
             return n[key]
     }));
-    console.log(min, max)
     return {
         min,
         max
@@ -64,5 +86,5 @@ function titleCase(str) {
     return splitStr.join(' '); 
  }
 
-export {fetchUrl, normalizeData, titleCase}
-export default {fetchUrl, normalizeData, titleCase}
+export {fetchUrl, normalizeData, normalizePrediction, titleCase, filterDatabByParams}
+export default {fetchUrl, normalizeData, normalizePrediction, titleCase, filterDatabByParams}

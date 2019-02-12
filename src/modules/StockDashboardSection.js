@@ -116,7 +116,7 @@ class StockDashboardSection extends React.PureComponent{
         const displayChart = !stockDataLoading && stockData != null
 
         return(
-            <div>
+            <div >
                 <Paper style={{maxHeight: 200, overflow: 'auto'}}>
                     <List component="nav" >
                         {tickerList.map(stockIndex => {
@@ -134,7 +134,7 @@ class StockDashboardSection extends React.PureComponent{
                 </Paper>
                 {displayChart && this.renderStockInfo()}
                 {displayChart && this.renderLabels()}
-                {displayChart && <PriceChart data={this.props.stockData} labels={displayLabels}/>}
+                {displayChart && <PriceChart style={{maxHeight: 200}} data={this.props.stockData} labels={displayLabels}/>}
             </div>  
         )
     }

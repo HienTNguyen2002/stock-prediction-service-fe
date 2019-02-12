@@ -25,6 +25,9 @@
             "ticker": "HSG"
         },
         {
+            "ticker": "SMB"
+        },
+        {
             "ticker": "VIC"
         }
     ]

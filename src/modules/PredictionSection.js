@@ -17,8 +17,7 @@ import {fetchPrediction} from '../actions/Prediction'
 import ParameterTuning from '../components/prediction-core/ParameterTuning'
 import BuildButton from '../components/prediction-core/BuildButton'
 import PredictionChart from '../components/prediction-core/PredictionChart'
-import { Paper } from '@material-ui/core';
-
+import {filterDatabByParams, normalizeData} from '../utils/helpers'
 const styles = theme => ({
     container:{
         flexGrow: 1,
@@ -94,22 +93,27 @@ class PredictionSection extends React.PureComponent{
     }
 
     renderPredictionChart(){
-        const { displayData, params, actualData, classes, breakpointPct} = this.props
+        const { displayData, params, actualData, classes, stockData} = this.props
+        const {days} = params
         if (!displayData || displayData.length === 0)
             return <div></div>
+
+        let filteredData= filterDatabByParams(stockData, params)
+        let normalized = normalizeData(filteredData, 'close')
+        console.log('Filtered Data', filteredData)
         return(
             <Typography component='div' className={classes.chartContainer}>
                 <Typography variant="h5" component="h5" gutterBottom>
                     Prediction Result on {params.ticker}
                 </Typography>
                 {this.renderModelParams()}
-                <div style={{marginTop: 20}}>
+                <div style={{marginTop: 20, height: 300}}>
                     <Typography style={{margin: 10, fontWeight:"bold"}} component="div" variant="h6">Prediction Result</Typography>
-                    <PredictionChart data={displayData} actualData={actualData}/>
+                    <PredictionChart data={displayData} dataKey="y" actualData={actualData}/>
                 </div>
-                <div>
-                    <Typography style={{margin: 10, fontWeight:"bold"}} component="div" variant="h6">Training Result</Typography>
-                    <PredictionChart data={actualData} actualData={actualData}/>
+                <div style={{height: 300}}>
+                    <Typography style={{margin: 10, fontWeight:"bold"}} component="div" variant="h6">Actual Price</Typography>
+                    <PredictionChart data={normalized} dataKey="close" actualData={stockData} startIndex={0} endIndex={days}/>
                 </div>
                 
             </Typography>
@@ -185,6 +189,7 @@ const mapStateToProps = ({Model, PredictionParams, Prediction, StockIndex}) => (
     predictionMessage: Prediction.message,
 
     stockDescription: StockIndex.stockDescription,
+    stockData: StockIndex.data,
 
     hasError: Model.hasError || Prediction.hasError
 })

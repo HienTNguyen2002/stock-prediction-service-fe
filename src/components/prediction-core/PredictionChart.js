@@ -31,20 +31,20 @@ class PredictionChart extends React.Component{
     }
 
     render(){
-        const {classes} = this.props
+        const {classes, dataKey, startIndex, endIndex} = this.props
         return(
             <CustomChart {...this.props}>
                 <XAxis dataKey='ds' tickFormatter={this.tickFormatter}/>
                 <YAxis/>
                 <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                <Tooltip content={<PredictionTooltip data={this.props.actualData}/>}/>
+                <Tooltip content={<PredictionTooltip data={this.props.actualData} key={dataKey}/>}/>
                 {/* <Legend /> */}
-                <Brush dataKey='ds' height={30} stroke="#8884d8"/>
+                <Brush dataKey='ds' height={30} stroke="#8884d8" startIndex={startIndex} endIndex={endIndex}/>
                 <Area dataKey="yhat_upper"  stroke="#000" fill="green" opacity={0.5}/>
                 <Area dataKey="yhat_lower"  stroke="#000" fill="white" opacity={1}/>
                     {/* <Line type="monotone" dataKey="yhat_lower" stroke="green" />
                     <Line type="monotone" dataKey="yhat_upper" stroke="blue" /> */}
-                <Line type="monotone" dataKey="y" stroke="red" dot={false}/>
+                <Line type="monotone" dataKey={dataKey || "y"} stroke="red" dot={false}/>
             </CustomChart>
         )
     }

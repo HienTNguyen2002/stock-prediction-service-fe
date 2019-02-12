@@ -1,5 +1,5 @@
 import * as Actions from '../actions/ActionTypes'
-import {normalizeData} from '../utils/helpers'
+import {normalizePrediction} from '../utils/helpers'
 
 const initialState = {
     isLoading: false,
@@ -23,12 +23,11 @@ const Prediction = (state = initialState, action)=> {
             }
         case Actions.FETCH_PREDICTION_SUCCESS:
             const {prediction, past, params} = action.predictions
-            
-            //const filteredPrediction = filterPrediction(prediction, params)
+            console.log("STATE", state)
             return{
                 ...state,
                 predictions: past,
-                displayPredictions: normalizeData(prediction),
+                displayPredictions: normalizePrediction(prediction),
                 message: action.message
             }
         case Actions.FETCH_PREDICTION_ERROR:
@@ -58,15 +57,7 @@ function getBreakPoint(params){
     return breakpointPct*100;
 }
 
-function filterPrediction(data =[], params = {}){
-    const {date, training_years} = params
-   
-    var prediction_start = moment(date).add(training_years, 'years')
-    return data.filter(item => {
-        const {ds} = item
-        return moment(ds).isAfter(prediction_start.format('YYYY MM DD'))
-    })
-}
+
 
 // function normalizeData(data){
 //     let normalizedData = JSON.parse(JSON.stringify(data))
